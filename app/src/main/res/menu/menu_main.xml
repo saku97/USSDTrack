@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="inc.padmal.ussdtrack.MainActivity">
+    <item
+        android:id="@+id/action_review"
+        android:orderInCategory="100"
+        android:title="@string/review"
+        android:icon="@drawable/icon_review"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_clean"
+        android:orderInCategory="50"
+        android:title="@string/clean"
+        android:icon="@drawable/icon_clean"
+        app:showAsAction="always" />
+</menu>
