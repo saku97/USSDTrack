@@ -16,9 +16,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     LineChart chartMoney, chartData;
     String ussd = "*100" + Uri.encode("#");
     Plotter plotter;
+    TextView tvData, tvMoney;
     SharedPreferences Logs;
 
     @Override
@@ -39,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
 
         chartMoney = findViewById(R.id.chartMoney);
         chartData = findViewById(R.id.chartData);
+
+        tvData = findViewById(R.id.tv_data);
+        tvMoney = findViewById(R.id.tv_money);
 
         plotter = Plotter.getInstance();
 
@@ -57,10 +65,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        makeTheCall();
+
         plotter.loadCharts(getApplicationContext(), chartMoney,
                 Logs.getString("MONEY", ""), Color.BLUE, "Money");
+        displayValues(chartMoney, tvMoney, true);
         plotter.loadCharts(getApplicationContext(), chartData,
                 Logs.getString("DATA", ""), Color.RED, "Data");
+        displayValues(chartData, tvData, false);
+    }
+
+    private void makeTheCall() {
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+            startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + ussd)));
+        }
     }
 
     @Override
@@ -69,15 +88,24 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    private void displayValues(LineChart chart, final TextView tv, final boolean mode) {
+        chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                String text = (mode ? "Rs. " : "") + e.getY() + (!mode ? " MB" : "");
+                tv.setText(text);
+            }
+
+            @Override
+            public void onNothingSelected() {/**/}
+        });
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_review:
-                if (ActivityCompat.checkSelfPermission(this,
-                        Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-                startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + ussd)));
+                makeTheCall();
                 break;
             case R.id.action_clean:
                 Logs.edit().clear().apply();
