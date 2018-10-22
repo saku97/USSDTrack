@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import org.json.JSONException;
@@ -62,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
             public void messageReceived(String messageText) {
                 processData(Logs.getString("DATA", ""),
                         messageText, chartData, "DATA", "Data", Color.RED);
+                setCurrentValues(tvData, chartData, "Data", false);
+                setCurrentValues(tvMoney, chartMoney, "Money", true);
             }
         });
 
@@ -69,10 +73,15 @@ public class MainActivity extends AppCompatActivity {
 
         plotter.loadCharts(getApplicationContext(), chartMoney,
                 Logs.getString("MONEY", ""), Color.BLUE, "Money");
-        displayValues(chartMoney, tvMoney, true);
         plotter.loadCharts(getApplicationContext(), chartData,
                 Logs.getString("DATA", ""), Color.RED, "Data");
-        displayValues(chartData, tvData, false);
+    }
+
+    private void setCurrentValues(TextView t, LineChart c, String l, boolean mode) {
+        ILineDataSet dataData = c.getLineData().getDataSetByLabel(l, false);
+        String text = String.valueOf(dataData.getEntryForIndex(dataData.getEntryCount() - 1).getY());
+        String v = (mode ? "Balance Rs. " : "Data ") + text + (!mode ? " MB" : "");
+        t.setText(v);
     }
 
     private void makeTheCall() {
@@ -86,19 +95,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
-
-    private void displayValues(LineChart chart, final TextView tv, final boolean mode) {
-        chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            @Override
-            public void onValueSelected(Entry e, Highlight h) {
-                String text = (mode ? "Rs. " : "") + e.getY() + (!mode ? " MB" : "");
-                tv.setText(text);
-            }
-
-            @Override
-            public void onNothingSelected() {/**/}
-        });
     }
 
     @Override
