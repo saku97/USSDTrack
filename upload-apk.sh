@@ -10,6 +10,9 @@ git config --global user.name "Travis CI"
 #clone the repository
 git clone --quiet --branch=apk https://CloudyPadmal:$GITHUB_API_KEY@github.com/CloudyPadmal/USSDTrack apk > /dev/null
 
+echo "List of files in current directory"
+ls -la
+
 cd apk
 
 \cp -r ../app/build/outputs/apk/*/**.apk .
