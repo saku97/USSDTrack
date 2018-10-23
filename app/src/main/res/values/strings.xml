@@ -1,7 +1,0 @@
-<resources>
-    <string name="app_name">USSDTrack</string>
-    <string name="action_settings">Settings</string>
-    <string name="accessibility_service_description">Padmal\'s stuff</string>
-    <string name="review">Review</string>
-    <string name="clean">Clean</string>
-</resources>
