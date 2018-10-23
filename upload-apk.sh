@@ -15,7 +15,6 @@ cd apk
 \cp -r ../app/build/outputs/apk/*/**.apk .
 \cp -r ../app/build/outputs/apk/debug/output.json debug-output.json
 \cp -r ../app/build/outputs/apk/release/output.json release-output.json
-\cp -r ../README.md .
 
 # Signing Apps
 
