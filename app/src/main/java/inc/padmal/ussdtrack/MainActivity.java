@@ -3,6 +3,7 @@ package inc.padmal.ussdtrack;
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -12,19 +13,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -104,11 +102,22 @@ public class MainActivity extends AppCompatActivity {
                 makeTheCall();
                 break;
             case R.id.action_clean:
-                Logs.edit().clear().apply();
-                chartMoney.invalidate();
-                chartMoney.clear();
-                chartData.invalidate();
-                chartData.clear();
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder
+                        .setMessage("You are going to delete all the chart data. Are you sure?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Logs.edit().clear().apply();
+                                chartMoney.invalidate();
+                                chartMoney.clear();
+                                chartData.invalidate();
+                                chartData.clear();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {/**/}
+                        })
+                        .create().show();
                 break;
             default:
                 break;
