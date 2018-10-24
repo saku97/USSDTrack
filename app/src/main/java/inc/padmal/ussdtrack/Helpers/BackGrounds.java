@@ -1,4 +1,4 @@
-package inc.padmal.ussdtrack;
+package inc.padmal.ussdtrack.Helpers;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
@@ -17,11 +17,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import inc.padmal.ussdtrack.Models.HourAxisValueFormatter;
+import inc.padmal.ussdtrack.Models.Medium;
+
 /**
  * Created by knight on 10/23/18.
  */
 
-class BackGrounds extends AsyncTask<Medium, Void, LineData> {
+public class BackGrounds extends AsyncTask<Medium, Void, LineData> {
 
     @SuppressLint("StaticFieldLeak")
     private LineChart chart;
@@ -31,7 +34,7 @@ class BackGrounds extends AsyncTask<Medium, Void, LineData> {
 
     private HourAxisValueFormatter axisFormatter;
 
-    BackGrounds(LineChart chart, TextView tv, boolean mode) {
+    public BackGrounds(LineChart chart, TextView tv, boolean mode) {
         this.chart = chart;
         this.tv = tv;
         this.mode = mode;

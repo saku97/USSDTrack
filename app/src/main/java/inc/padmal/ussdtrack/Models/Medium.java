@@ -1,4 +1,4 @@
-package inc.padmal.ussdtrack;
+package inc.padmal.ussdtrack.Models;
 
 import android.content.Context;
 

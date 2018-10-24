@@ -1,4 +1,4 @@
-package inc.padmal.ussdtrack;
+package inc.padmal.ussdtrack.Helpers;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;

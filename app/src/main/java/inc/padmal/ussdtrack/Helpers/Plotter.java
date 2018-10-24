@@ -1,4 +1,4 @@
-package inc.padmal.ussdtrack;
+package inc.padmal.ussdtrack.Helpers;
 
 import android.content.Context;
 import android.widget.TextView;
@@ -7,6 +7,8 @@ import com.github.mikephil.charting.charts.LineChart;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import inc.padmal.ussdtrack.Models.Medium;
 
 /**
  * Created by knight on 10/22/18.
