@@ -8,4 +8,9 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="delete_confirmation">You are going to delete all the chart data. Are you sure?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="error_parse">Error in parsing</string>
 </resources>

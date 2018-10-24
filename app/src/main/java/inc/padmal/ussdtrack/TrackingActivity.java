@@ -132,8 +132,8 @@ public class TrackingActivity extends AppCompatActivity
             case R.id.action_clean:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder
-                        .setMessage("You are going to delete all the chart data. Are you sure?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        .setMessage(getString(R.string.delete_confirmation))
+                        .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 Logs.edit().clear().apply();
                                 chartMoney.invalidate();
@@ -142,7 +142,7 @@ public class TrackingActivity extends AppCompatActivity
                                 chartData.clear();
                             }
                         })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {/**/}
                         })
                         .create().show();
@@ -207,7 +207,7 @@ public class TrackingActivity extends AppCompatActivity
                 plotter.plotChart(getApplicationContext(), FirstJSON, chart, label,
                         color, tv, mode);
             } catch (JSONException j) {
-                Toast.makeText(getApplicationContext(), "Error in parsing", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.error_parse), Toast.LENGTH_LONG).show();
             }
         }
     }
