@@ -4,4 +4,8 @@
     <string name="accessibility_service_description">Padmal\'s stuff</string>
     <string name="review">Review</string>
     <string name="clean">Clean</string>
+    <string name="title_activity_tracking">TrackingActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
