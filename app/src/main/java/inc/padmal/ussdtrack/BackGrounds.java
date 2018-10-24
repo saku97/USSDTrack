@@ -3,6 +3,7 @@ package inc.padmal.ussdtrack;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -24,11 +25,16 @@ class BackGrounds extends AsyncTask<Medium, Void, LineData> {
 
     @SuppressLint("StaticFieldLeak")
     private LineChart chart;
+    private TextView tv;
+    private boolean mode;
+    private String lastValue = "";
 
     private HourAxisValueFormatter axisFormatter;
 
-    BackGrounds(LineChart chart) {
+    BackGrounds(LineChart chart, TextView tv, boolean mode) {
         this.chart = chart;
+        this.tv = tv;
+        this.mode = mode;
         axisFormatter = new HourAxisValueFormatter(0);
     }
 
@@ -64,6 +70,8 @@ class BackGrounds extends AsyncTask<Medium, Void, LineData> {
             i++;
         }
 
+        this.lastValue = String.valueOf(entries.get(entries.size() - 1).getY());
+
         LineDataSet dataSet = new LineDataSet(entries, medium.getLabel());
         dataSet.setColor(medium.getColor());
         dataSet.setCircleColor(Color.BLACK);
@@ -75,6 +83,8 @@ class BackGrounds extends AsyncTask<Medium, Void, LineData> {
     @Override
     protected void onPostExecute(LineData data) {
         super.onPostExecute(data);
+        String v = (mode ? "Balance Rs. " : "Data ") + lastValue + (!mode ? " MB" : "");
+        tv.setText(v);
         chart.getXAxis().setValueFormatter(axisFormatter);
         chart.getDescription().setEnabled(false);
         chart.setData(data);
