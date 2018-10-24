@@ -25,7 +25,7 @@ if [ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
     echo "Push to main branch detected, generating apk..."
     # Rename apks with dev prefixes
     mv app-debug.apk app-dev-debug.apk
-    mv app-release-unsigned.apk app-dev-release.apk
+    rm -rf app-release-unsigned.apk
     # Push generated apk files to apk branch
     git checkout apk
     git add -A
