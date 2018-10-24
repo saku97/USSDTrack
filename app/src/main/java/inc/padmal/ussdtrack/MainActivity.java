@@ -22,7 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,25 +60,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void messageReceived(String messageText) {
                 processData(Logs.getString("DATA", ""),
-                        messageText, chartData, "DATA", "Data", Color.RED);
-                setCurrentValues(tvData, chartData, "Data", false);
-                setCurrentValues(tvMoney, chartMoney, "Money", true);
+                        messageText, chartData, "DATA", "Data", Color.RED, tvData, false);
             }
         });
 
         makeTheCall();
 
         plotter.loadCharts(getApplicationContext(), chartMoney,
-                Logs.getString("MONEY", ""), Color.BLUE, "Money");
+                Logs.getString("MONEY", ""), Color.BLUE, "Money", tvMoney, true);
         plotter.loadCharts(getApplicationContext(), chartData,
-                Logs.getString("DATA", ""), Color.RED, "Data");
-    }
-
-    private void setCurrentValues(TextView t, LineChart c, String l, boolean mode) {
-        ILineDataSet dataData = c.getLineData().getDataSetByLabel(l, false);
-        String text = String.valueOf(dataData.getEntryForIndex(dataData.getEntryCount() - 1).getY());
-        String v = (mode ? "Balance Rs. " : "Data ") + text + (!mode ? " MB" : "");
-        t.setText(v);
+                Logs.getString("DATA", ""), Color.RED, "Data", tvData, false);
     }
 
     private void makeTheCall() {
@@ -132,24 +122,27 @@ public class MainActivity extends AppCompatActivity {
             String message = intent.getStringExtra("USSD");
             processData(Logs.getString("MONEY", ""),
                     message.substring(message.indexOf("Rs.") + 4, message.indexOf("will") - 1),
-                    chartMoney, "MONEY", "Money", Color.BLUE);
+                    chartMoney, "MONEY", "Money", Color.BLUE, tvMoney, true);
         }
     };
 
-    private void processData(String JStr, String msg, LineChart chart, String Key, String label, int color) {
+    private void processData(String JStr, String msg, LineChart chart, String Key, String label,
+                             int color, TextView tv, boolean mode) {
         try {
             JSONObject jsonObject = new JSONObject(JStr);
             jsonObject.put(String.valueOf(System.currentTimeMillis()), msg);
             String updateJSONString = jsonObject.toString();
             Logs.edit().putString(Key, updateJSONString).apply();
-            plotter.plotChart(getApplicationContext(), jsonObject, chart, label, color);
+            plotter.plotChart(getApplicationContext(), jsonObject, chart, label,
+                    color, tv, mode);
         } catch (JSONException e) {
             JSONObject FirstJSON = new JSONObject();
             try {
                 FirstJSON.put(String.valueOf(System.currentTimeMillis()), msg);
                 String updateJSONString = FirstJSON.toString();
                 Logs.edit().putString(Key, updateJSONString).apply();
-                plotter.plotChart(getApplicationContext(), FirstJSON, chart, label, color);
+                plotter.plotChart(getApplicationContext(), FirstJSON, chart, label,
+                        color, tv, mode);
             } catch (JSONException j) {
                 Toast.makeText(getApplicationContext(), "Error in parsing", Toast.LENGTH_LONG).show();
             }
